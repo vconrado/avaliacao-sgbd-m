@@ -1,0 +1,18 @@
+set no fetch;
+
+-- remove(mod13q1_nrb);
+
+create array n_data <val:int16>[col_id=0:1000,40,0,row_id=0:1000,40,0,time_id=0:100,512,0];
+create array r_data <val:int16>[col_id=0:1000,40,0,row_id=0:1000,40,0,time_id=0:100,512,0];
+create array b_data <val:int16>[col_id=0:1000,40,0,row_id=0:1000,40,0,time_id=0:100,512,0];
+
+store(build(n_data,random()%255),n_data);
+store(build(r_data,random()%255),r_data);
+store(build(b_data,random()%255),b_data);
+
+create array mod13q1_nrb <nir:int16, red:int16, blue:int16>[col_id=0:1000,40,0,row_id=0:1000,40,0,time_id=0:100,512,0];
+store(join(join(n_data,b_data), r_data), mod13q1_nrb);
+
+remove(n_data);
+remove(r_data);
+remove(b_data);

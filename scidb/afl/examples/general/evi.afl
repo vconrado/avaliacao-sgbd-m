@@ -1,0 +1,24 @@
+--
+-- File: evi.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-03-28
+-- Last update: 2017-03-28
+--
+-- Description: Cria um novo atributo ao array, calculando o evi, utilizando a formula
+-- evi = G * (nir - red)/(nir + c1*red - c2*blue + l), onde
+--
+-- L = 1, C1 = 6, C2 = 7.5 e G = 2.5
+--
+
+set no fetch;
+store(
+	project(
+		apply(
+			mod13q1_nrb, 
+			evi, 
+			2.5*(nir-red)/(nir+6.0*red-7.5*blue+1.)
+		),
+		evi
+	),
+	evi_arr
+)

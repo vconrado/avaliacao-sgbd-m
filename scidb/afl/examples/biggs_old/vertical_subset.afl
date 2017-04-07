@@ -1,0 +1,17 @@
+--
+-- File: vertical_subset.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-03-31
+-- Last update: 2017-03-31
+--
+--
+
+set no fetch;
+store(
+	subarray(
+		mod13q1_nrb, 
+		0, 43200, 0,
+		172799, 43200, 511
+	),
+	mod13q1_nrb_vert
+)

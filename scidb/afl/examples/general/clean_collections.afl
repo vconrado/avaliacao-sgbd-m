@@ -1,0 +1,14 @@
+--
+-- File: clean_collections.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-04-04
+-- Last update: 2017-04-04
+--
+-- Description: Apaga as colecoes criadas no teste para o Biggs
+--
+remove(mod13q1_nrb_evi);
+remove(mod13q1_nrb_horiz);
+remove(mod13q1_nrb_vert);
+remove(mod13q1_nrb_time);
+remove(mod13q1_nrb_subset);
+

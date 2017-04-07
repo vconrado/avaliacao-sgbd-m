@@ -1,0 +1,14 @@
+--
+-- File: horizontali_subset.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-03-31
+-- Last update: 2017-03-31
+--
+--
+
+set no fetch;
+subarray(
+	mod13q1_nrb, 
+	86400, 0, 0,
+	86400, 86399, 511
+)

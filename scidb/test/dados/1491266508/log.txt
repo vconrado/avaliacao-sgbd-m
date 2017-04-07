@@ -1,0 +1,40 @@
+Processing biggs/horizontal_subset.afl at Seg Abr  3 21:41:48 BRT 2017 (1491266508).
+time ./monitora.sh dados/1491266508/horizontal_subset.afl.csv roda_iquery.sh biggs/horizontal_subset.afl
+Query was executed successfully
+
+real	0m1.389s
+user	0m0.013s
+sys	0m0.010s
+Finished biggs/horizontal_subset.afl at Seg Abr  3 21:41:50 BRT 2017 (1491266510).
+
+
+Processing biggs/subset.afl at Seg Abr  3 21:51:50 BRT 2017 (1491267110).
+time ./monitora.sh dados/1491266508/subset.afl.csv roda_iquery.sh biggs/subset.afl
+Query was executed successfully
+
+real	0m0.798s
+user	0m0.011s
+sys	0m0.007s
+Finished biggs/subset.afl at Seg Abr  3 21:51:51 BRT 2017 (1491267111).
+
+
+Processing biggs/time_subset.afl at Seg Abr  3 22:01:51 BRT 2017 (1491267711).
+time ./monitora.sh dados/1491266508/time_subset.afl.csv roda_iquery.sh biggs/time_subset.afl
+Query was executed successfully
+
+real	0m0.766s
+user	0m0.011s
+sys	0m0.008s
+Finished biggs/time_subset.afl at Seg Abr  3 22:01:51 BRT 2017 (1491267711).
+
+
+Processing biggs/vertical_subset.afl at Seg Abr  3 22:11:51 BRT 2017 (1491268311).
+time ./monitora.sh dados/1491266508/vertical_subset.afl.csv roda_iquery.sh biggs/vertical_subset.afl
+Query was executed successfully
+
+real	0m48.611s
+user	0m0.011s
+sys	0m0.007s
+Finished biggs/vertical_subset.afl at Seg Abr  3 22:12:40 BRT 2017 (1491268360).
+
+
