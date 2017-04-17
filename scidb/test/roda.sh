@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# roda.sh
+#
+# Executa todos os arquivos .afl da pasta afl utilizando o script monitora
+
+
 
 DELAY=300
 
@@ -19,7 +25,7 @@ for f in afl/*.afl; do
 	OUT="${FOLDER}/${OUT}.csv"
 	echo "Processing $f at `date` (`date +%s`)."
 	echo "time ./monitora.sh $OUT roda_iquery.sh $f"
-	time ./monitora.sh $OUT roda_iquery.sh $f
+	time ./monitora.sh $OUT iquery_wrapper.sh $f
 	echo "Finished $f at `date` (`date +%s`)."
 	sleep $DELAY
 	echo

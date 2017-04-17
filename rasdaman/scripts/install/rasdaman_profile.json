@@ -1,0 +1,32 @@
+{
+  "profile_name": "rasdaman_profile",
+  "build": {
+    "type": "source",
+    "repository": "git://rasdaman.org/rasdaman.git",
+    "version": "master"
+  },
+  "install_path": "/opt/rasdaman",
+  "user": "rasdaman",
+  "developer_friendly": true,
+  "unorthodox_changes": false,
+  "automated": false,
+  "debug": true,
+  "error_message_limit": 400,
+  "communication_protocol": "rasnet",
+  "database": {
+    "type": "sqlite"
+  },
+  "petascope": {
+    "enabled": false
+  },
+  "secore": {
+    "enabled": false
+  },
+  "demo": {
+    "rasdaman_data": true,
+    "petascope_data": false
+  },
+  "test": {
+    "systemtest": false
+  }
+}
