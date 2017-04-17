@@ -1,4 +1,12 @@
 #!/bin/bash
+#
+# Cria os arquivos com a lista de de arquivos HDF que existem nos discos selecionados
+# Gera seguintes arquivos dentro da pasta $DIR
+#	- hdf.files.doys: com a lista de dias únidos dos arquivos
+#	- hdf.files.hv: lista com as celulas únidas ocupadas pelos arquivos
+#	- hdf.<dir>·partial: lista de arquivos hdf do diretório <dir>
+#	- hdf.files: lista consolidada de todos os arquivos hdf (todos os <dir>'s)
+
 
 DIR=./data
 
