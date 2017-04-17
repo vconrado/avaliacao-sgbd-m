@@ -1,3 +1,0 @@
-struct MOD13Q1_NRB_pixel {short nir,red,blue;};
-typedef marray <MOD13Q1_NRB_pixel, [0:172799, 0:86599, 0:*] > MOD13Q1_NRB_cube;
-typedef set <MOD13Q1_NRB_cube> MOD13Q1_NRB_cube_set;

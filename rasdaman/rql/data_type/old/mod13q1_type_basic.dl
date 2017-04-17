@@ -1,3 +1,0 @@
-struct mod13q1_basic_str {short ndvi,evi;};
-typedef marray <mod13q1_basic_str , [0:172799, 0:86399, 0:511] > MOD13Q1_basic_arr;
-typedef set <MOD13Q1_basic_arr> MOD13Q1_basic_set;

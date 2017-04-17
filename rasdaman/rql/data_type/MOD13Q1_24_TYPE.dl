@@ -1,3 +1,0 @@
-struct MOD13Q1_24_pixel {short ndvi,evi,quality,red,nir,blue,mir,view_zenith,sun_zenith,relative_azimuth,day_of_year, reliability;};
-typedef marray <MOD13Q1_24_pixel, [0:172799, 0:86599, 0:*] > MOD13Q1_24_cube;
-typedef set <MOD13Q1_24_cube> MOD13Q1_24_cube_set;
