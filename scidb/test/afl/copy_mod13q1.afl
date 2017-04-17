@@ -1,0 +1,19 @@
+--
+-- File: copy_mod13q1.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-04-03
+-- Last update: 2017-04-03
+--
+-- Description: Projeta a collection mod13q1 para os atributos nir, red, blue e salva como mod13q1_nrb
+--
+
+set no fetch;
+store(
+	project(
+		mod13q1_512, 
+		nir,
+		red,
+		blue
+	),
+	mod13q1_nrb
+)

@@ -1,0 +1,20 @@
+--
+-- File: window.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-03-29
+-- Last update: 2017-03-29
+--
+-- Description: Filtro de media em uma janela 3x3
+--
+
+set no fetch;
+store(
+	window(
+		evi_arr, 
+		0, 2,
+		0, 2,
+		0, 0,
+		avg(evi)
+	),
+	evi_arr_avg
+);

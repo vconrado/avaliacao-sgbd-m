@@ -1,0 +1,17 @@
+--
+-- File: save_mod13q1.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-04-04
+-- Last update: 2017-04-04
+--
+-- Description: Exporta a collection mod13q1_nrb para do disco
+--
+-- Fonte: http://forum.paradigm4.com/t/parallel-loading-of-binary-files/641/4
+
+set no fetch;
+save(
+	mod13q1_nrb, 
+	'/disks/d11/rasdaman/raw/mod13q1_nrb.bin',
+	0,
+	'(uint16,uint16,uint16)'
+)

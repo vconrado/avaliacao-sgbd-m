@@ -1,0 +1,19 @@
+--
+-- File: quantile.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-03-29
+-- Last update: 2017-03-29
+--
+-- Description: Calcula o percentual de cada quantil (10) do array
+-- 
+--
+
+set no fetch;
+store(
+	quantile(
+		evi_arr, 
+		10, 
+		evi
+		),
+	evi_arr_qntl
+)
