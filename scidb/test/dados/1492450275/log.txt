@@ -1,0 +1,7 @@
+Processing afl/array_size.afl at Seg Abr 17 14:31:15 BRT 2017 (1492450275).
+time ./monitora.sh dados/1492450275/array_size.afl.csv roda_iquery.sh afl/array_size.afl
+
+real	0m1.967s
+user	0m0.012s
+sys	0m0.007s
+Finished afl/array_size.afl at Seg Abr 17 14:31:17 BRT 2017 (1492450277).
