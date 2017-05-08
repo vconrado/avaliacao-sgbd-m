@@ -1,1 +1,0 @@
-aggregate(filter(list('chunk map'), uaid = 9), sum(usize), sum(csize), sum(asize), inst)

@@ -1,0 +1,17 @@
+--
+-- File: horizontal.afl
+-- Author: Vitor Gomes <vconrado@gmail.com>
+-- Created: 2017-03-31
+-- Last update: 2017-05-08
+--
+--
+
+set no fetch;
+store(
+	subarray(
+		mod13q1_nrb, 
+		57600, 33600, 256,
+		57600, 67199, 256
+	),
+	mod13q1_test_horizontal
+)

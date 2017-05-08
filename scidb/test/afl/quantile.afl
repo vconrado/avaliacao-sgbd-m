@@ -11,9 +11,9 @@
 set no fetch;
 store(
 	quantile(
-		evi_arr, 
+		evi_test_arr, 
 		10, 
 		evi
 		),
-	evi_arr_qntl
+	evi_test_arr_qntl
 )

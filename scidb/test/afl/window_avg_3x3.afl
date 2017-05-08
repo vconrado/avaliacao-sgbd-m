@@ -10,11 +10,11 @@
 set no fetch;
 store(
 	window(
-		evi_arr, 
+		evi_test_arr, 
 		0, 2,
 		0, 2,
 		0, 0,
 		avg(evi)
 	),
-	evi_arr_avg
+	evi_test_arr_avg
 );

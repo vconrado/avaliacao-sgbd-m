@@ -20,5 +20,5 @@ store(
 		),
 		evi
 	),
-	evi_arr
+	evi_test_arr
 )
