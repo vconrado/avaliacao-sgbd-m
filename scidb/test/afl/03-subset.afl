@@ -9,7 +9,7 @@
 set no fetch;
 store(
 	subarray(
-		mod13q1_nrb, 
+		mod13q1_test, 
 		52800, 43200, 128,
 		62399, 52799, 255
 	),

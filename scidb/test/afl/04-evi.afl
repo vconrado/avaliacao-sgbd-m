@@ -14,7 +14,7 @@ set no fetch;
 store(
 	project(
 		apply(
-			mod13q1_nrb, 
+			mod13q1_test, 
 			evi, 
 			2.5*(nir-red)/(nir+6.0*red-7.5*blue+1.)
 		),
