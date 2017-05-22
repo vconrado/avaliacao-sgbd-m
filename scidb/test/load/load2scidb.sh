@@ -30,14 +30,14 @@ if [ $# -lt 1 ]; then
     exit
 fi
 
-function HDP_CONVERT {
+function hdp_convert {
     LAYER=$1
     FILE_OUT=$2
     FILE_IN=$3
     
     echo "$HDP dumpsds -n \"$LAYER\" -o \"$FILE_OUT\" -b \"$FILE_IN\""
-
 }
+
 
 
 INPUT_FILE=$1
@@ -49,6 +49,8 @@ fi
 
 
 while read line; do
+
+
     SEQ=$(echo $line | cut -d ',' -f 1)
     #AYYYY=$(echo $line | cut -d ',' -f 2)
     FILE=$(echo $line | cut -d ',' -f 3)
@@ -59,59 +61,59 @@ while read line; do
     DOY=$(echo $line | cut -d ',' -f 8)
     YYYY=$(echo $line | cut -d ',' -f 9)
 
-    echo "$FILE $H0 $HF $V0 $VF $YYDOY $DOY $YYYY"
+    echo "Processando $SEQ $FILE $H0 $HF $V0 $VF $DOY $YYYY"
     
     # 1) Extrai bandas
     # ndvi
-    LAYER="250m 16 days NDVI"
-    FILE_NDVI="${FILE}.ndvi"
-    hdp_convert "250m 16 days NDVI" 
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_NDVI}" -b "$FILE"
+    NDVI_FILE="${TMP_DIR}/$(basename ${FILE}).ndvi"
+    hdp_convert "250m 16 days NDVI" "${NDVI_FILE}" "${FILE}"
 
     # evi
-    LAYER="250m 16 days EVI"
-    FILE_EVI="${FILE}.evi"
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_EVI}" -b "$FILE"
+    EVI_FILE="${TMP_DIR}/$(basename ${FILE}).evi" 
+    hdp_convert "250m 16 days EVI" "${EVI_FILE}" "${FILE}"
     
     # quality
-    LAYER="250m 16 days VI Quality"
-    FILE_QUALITY="${FILE}.quality"
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_QUALITY}" -b "$FILE"
-    
+    QUALITY_FILE="${TMP_DIR}/$(basename ${FILE}).quality"
+    hdp_convert "250m 16 days VI Quality" "${QUALITY_FILE}" "${FILE}"
+
     # red
-    LAYER="250m 16 days red reflectance"
-    FILE_RED="${FILE}.red"
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_RED}" -b "$FILE"
+    RED_FILE="${TMP_DIR}/$(basename ${FILE}).red"
+    hdp_convert "250m 16 days red reflectance" "${RED_FILE}" "${FILE}"
 
     # nir
-    LAYER="250m 16 days NIR reflectance"
-    FILE_NIR="${FILE}.nir"
+    NIR_FILE="${TMP_DIR}/$(basename ${FILE}).nir"
+    hdp_convert "250m 16 days NIR reflectance" "${NIR_FILE}" "${FILE}"
 
     # blue
-    LAYER="250m 16 days blue reflectance"
-    FILE_BLUE="${FILE}.blue"
-
+    BLUE_FILE="${TMP_DIR}/$(basename ${FILE}).blue"
+    hdp_convert "250m 16 days blue reflectance" "${BLUE_FILE}" "${FILE}"
+    
     # mir
-    LAYER="250m 16 days MIR reflectance"
-    FILE_MIR="${FILE}.mir"
-
+    MIR_FILE="${TMP_DIR}/$(basename ${FILE}).mir" 
+    hdp_convert "250m 16 days MIR reflectance" "${MIR_FILE}" "${FILE}"
+    
     # view_zenith
-    LAYER="250m 16 days view zenith angle"
-    FILE_VIEW_ZENITH="${FILE}.view_zenith"
-
+    VIEW_ZENITH_FILE="${TMP_DIR}/$(basename ${FILE}).view_zenith"
+    hdp_convert "250m 16 days view zenith angle" "${VIEW_ZENITH_FILE}" "${FILE}"
+    
     # sun_zenith
-    LAYER="250m 16 days sun zenith angle"
-    FILE_SUN_ZENITH="${FILE}.sun_zenith"
-
+    SUN_ZENITH_FILE="${TMP_DIR}/$(basename ${FILE}).sun_zenith"
+    hdp_convert "250m 16 days sun zenith angle" "${SUN_ZENITH_FILE}" "${FILE}"
+    
     # relative_azimuth
-    LAYER="250m 16 days relative azimuth angle"
-    FILE_RELATIVE_AZIMUTH="${FILE}.relative_azimuth"
-
+    RELATIVE_AZIMUTH_FILE="${TMP_DIR}/$(basename ${FILE}).relative_azimuth"
+    hdp_convert "250m 16 days relative azimuth angle" "${RELATIVE_AZIMUTH_FILE}" "${FILE}"
+    
     # day_of_year
-    LAYER="250m 16 days composite day of the year"
-    FILE_DOY="${FILE}.doy"
-
-done < $INPUT_FILE
+    DOY_FILE="${TMP_DIR}/$(basename ${FILE}).doy"
+    hdp_convert "250m 16 days composite day of the year" "${DOY_FILE}" "${FILE}"
+    
+    INTERLEAVED_FILE="${TMP_DIR}/$(basename ${FILE}).scidb"
+    echo "${INTERLEAVER} $NDVI_FILE $EVI_FILE $QUALITY_FILE $RED_FILE $NIR_FILE $BLUE_FILE $MIR_FILE $VIEW_ZENITH_FILE $SUN_ZENITH_FILE $RELATIVE_AZIMUTH_FILE $DOY_FILE $INTERLEAVED_FILE"
+    
+    echo
+    echo    
+done < $INPUT_FILE 
 
 
 #iquery -a -q "insert(redimension(apply(mod13q1_vc_1d_test,row_id, 10+i%10, col_id, 20+i/10),mod13q1_vc_test),mod13q1_vc_test);"
