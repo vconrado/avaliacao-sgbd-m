@@ -26,10 +26,15 @@ int main(int argc, char* argv[]){
 		return 1;
 	}
 	
+//    for(i=0; i<argc; i++){
+//        printf("#%d %s\n", i, argv[i]);
+//    }
+
+
 	// try to open output file
-	out_file = fopen(argv[N_FILES+2],"wb");
+	out_file = fopen(argv[N_FILES+1],"wb");
 	if(out_file == NULL){
-		fprintf(stderr,"Was not possible to create output file '%s'\n", argv[N_FILES+2]);
+		fprintf(stderr,"Was not possible to create output file '%s'\n", argv[N_FILES+1]);
 		return 2;
 	}
 	// try to open all input 12 files

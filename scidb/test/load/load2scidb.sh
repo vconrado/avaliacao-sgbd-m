@@ -35,7 +35,8 @@ function hdp_convert {
     FILE_OUT=$2
     FILE_IN=$3
     
-    echo "$HDP dumpsds -n \"$LAYER\" -o \"$FILE_OUT\" -b \"$FILE_IN\""
+    #echo "$HDP dumpsds -n \"$LAYER\" -o \"$FILE_OUT\" -b \"$FILE_IN\""
+    $HDP dumpsds -n "$LAYER" -o "$FILE_OUT" -b "$FILE_IN"
 }
 
 
@@ -109,10 +110,8 @@ while read line; do
     hdp_convert "250m 16 days composite day of the year" "${DOY_FILE}" "${FILE}"
     
     INTERLEAVED_FILE="${TMP_DIR}/$(basename ${FILE}).scidb"
-    echo "${INTERLEAVER} $NDVI_FILE $EVI_FILE $QUALITY_FILE $RED_FILE $NIR_FILE $BLUE_FILE $MIR_FILE $VIEW_ZENITH_FILE $SUN_ZENITH_FILE $RELATIVE_AZIMUTH_FILE $DOY_FILE $INTERLEAVED_FILE"
+    ${INTERLEAVER} "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE $INTERLEAVED_FILE"
     
-    echo
-    echo    
 done < $INPUT_FILE 
 
 
