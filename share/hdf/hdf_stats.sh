@@ -13,6 +13,8 @@ DIR=./data
 HDF_COL_SIZE=4800
 HDF_ROW_SIZE=4800
 
+COUNT=0
+
 find /disks/d14 -name "*.hdf" | sort > $DIR/hdf.files.d14.partial
 find /disks/d15 -name "*.hdf" | sort > $DIR/hdf.files.d15.partial
 
@@ -37,7 +39,8 @@ while read line; do
     let COL_END="${COL_START}+${HDF_COL_SIZE}-1"
     let ROW_START="${V#0}*${HDF_ROW_SIZE}"
     let ROW_END="${ROW_START}+${HDF_ROW_SIZE}-1"
-    echo "${FILE_DIR}/${FILE},${COL_START},${COL_END},${ROW_START},${ROW_END},${YY}${DOY},${DOY},${YEAR}" >> $DIR/hdf.files.csv
+    echo "${AYEARDOY},$COUNT,${FILE_DIR}/${FILE},${COL_START},${COL_END},${ROW_START},${ROW_END},${YY}${DOY},${DOY},${YEAR}" >> $DIR/hdf.files.csv
+    COUNT=$(($COUNT + 1)) 
 done < $DIR/hdf.files
 
 cd $DIR
