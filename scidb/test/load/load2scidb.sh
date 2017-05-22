@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Carrega imagens hdf para o scidb a partir da lista em csv no formato
-# full_path_file_name,h0, hf, v0, vf, yydoy, doy, yyyy
+# seq,ayyyydoy,full_path_file_name,h0, hf, v0, vf, yydoy, doy, yyyy
 # h0, hf, v0 e vf: representam a quadricula no mapa MODIS
 # yydoy é uma referencia ao tempo (dois ultimos digitos do ano + doy)
 #
@@ -30,6 +30,16 @@ if [ $# -lt 1 ]; then
     exit
 fi
 
+function HDP_CONVERT {
+    LAYER=$1
+    FILE_OUT=$2
+    FILE_IN=$3
+    
+    echo "$HDP dumpsds -n \"$LAYER\" -o \"$FILE_OUT\" -b \"$FILE_IN\""
+
+}
+
+
 INPUT_FILE=$1
 
 if [ ! -f "$INPUT_FILE" ]; then
@@ -39,14 +49,15 @@ fi
 
 
 while read line; do
-    FILE=$(echo $line | cut -d ',' -f 1)
-    H0=$(echo $line | cut -d ',' -f 2)
-    HF=$(echo $line | cut -d ',' -f 3)
-    V0=$(echo $line | cut -d ',' -f 4)
-    VF=$(echo $line | cut -d ',' -f 5)
-    YYDOY=$(echo $line | cut -d ',' -f 6)
-    DOY=$(echo $line | cut -d ',' -f 7)
-    YYYY=$(echo $line | cut -d ',' -f 8)
+    SEQ=$(echo $line | cut -d ',' -f 1)
+    #AYYYY=$(echo $line | cut -d ',' -f 2)
+    FILE=$(echo $line | cut -d ',' -f 3)
+    H0=$(echo $line | cut -d ',' -f 4)
+    HF=$(echo $line | cut -d ',' -f 5)
+    V0=$(echo $line | cut -d ',' -f 6)
+    VF=$(echo $line | cut -d ',' -f 7)
+    DOY=$(echo $line | cut -d ',' -f 8)
+    YYYY=$(echo $line | cut -d ',' -f 9)
 
     echo "$FILE $H0 $HF $V0 $VF $YYDOY $DOY $YYYY"
     
@@ -54,6 +65,7 @@ while read line; do
     # ndvi
     LAYER="250m 16 days NDVI"
     FILE_NDVI="${FILE}.ndvi"
+    hdp_convert "250m 16 days NDVI" 
     $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_NDVI}" -b "$FILE"
 
     # evi
