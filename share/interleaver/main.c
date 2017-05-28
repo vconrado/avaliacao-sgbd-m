@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-void usage(char *name);
+void usage(int argc, char **argv);
 
 #define N_FILES 11
 
@@ -22,14 +22,10 @@ int main(int argc, char* argv[]){
 	int seek;
 
 	if(argc != (N_FILES+2)) {
-		usage(argv[0]);
+		usage(argc, argv);
 		return 1;
 	}
 	
-//    for(i=0; i<argc; i++){
-//        printf("#%d %s\n", i, argv[i]);
-//    }
-
 
 	// try to open output file
 	out_file = fopen(argv[N_FILES+1],"wb");
@@ -72,6 +68,11 @@ int main(int argc, char* argv[]){
 	return 0;
 }
 
-void usage(char *name){
-	fprintf(stderr,"Usage: %s ndvi_file evi_file quality_file red_file nir_file blue_file mir_file view_zenith_file sun_zenith_file relative_azimuth_file day_of_year_file output_file\n", name);
+void usage(int argc, char **argv){
+    int i;
+	fprintf(stderr,"Usage: %s ndvi_file evi_file quality_file red_file nir_file blue_file mir_file view_zenith_file sun_zenith_file relative_azimuth_file day_of_year_file output_file\n", argv[0]);
+    for(i=0; i<argc; ++i){
+        fprintf(stderr,"Arg[%d] = '%s'\n", i, argv[i]);
+    }
+
 }
