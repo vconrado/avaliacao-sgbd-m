@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Carrega imagens hdf para o scidb a partir da lista em csv no formato
-# full_path_file_name,h0, hf, v0, vf, yydoy, doy, yyyy
+# seq,ayyyydoy,full_path_file_name,h0, hf, v0, vf, yydoy, doy, yyyy
 # h0, hf, v0 e vf: representam a quadricula no mapa MODIS
 # yydoy é uma referencia ao tempo (dois ultimos digitos do ano + doy)
 #
@@ -30,6 +30,15 @@ if [ $# -lt 1 ]; then
     exit
 fi
 
+function hdp_convert {
+    LAYER=$1
+    FILE_OUT=$2
+    FILE_IN=$3
+    echo "Extraindo '$LAYER' ..." 
+    #echo "$HDP dumpsds -n \"$LAYER\" -o \"$FILE_OUT\" -b \"$FILE_IN\""
+    $HDP dumpsds -n "$LAYER" -o "$FILE_OUT" -b "$FILE_IN"
+}
+
 INPUT_FILE=$1
 
 if [ ! -f "$INPUT_FILE" ]; then
@@ -38,69 +47,109 @@ if [ ! -f "$INPUT_FILE" ]; then
 fi
 
 
+#[col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0]'
+
+#    iquery -a -q "create array mod13q1_vc_3d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0];"
+#    echo "iquery -a -q \"create array mod13q1_vc_3d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0];\""
+    echo
+START_TIME=$(date +%s)
 while read line; do
-    FILE=$(echo $line | cut -d ',' -f 1)
-    H0=$(echo $line | cut -d ',' -f 2)
-    HF=$(echo $line | cut -d ',' -f 3)
-    V0=$(echo $line | cut -d ',' -f 4)
-    VF=$(echo $line | cut -d ',' -f 5)
-    YYDOY=$(echo $line | cut -d ',' -f 6)
+
+    START_F_TIME=$(date +%s)
+    TIME=$(echo $line | cut -d ',' -f 1)
+    FILE=$(echo $line | cut -d ',' -f 2)
+    H0=$(echo $line | cut -d ',' -f 3)
+    HF=$(echo $line | cut -d ',' -f 4)
+    V0=$(echo $line | cut -d ',' -f 5)
+    VF=$(echo $line | cut -d ',' -f 6)
     DOY=$(echo $line | cut -d ',' -f 7)
     YYYY=$(echo $line | cut -d ',' -f 8)
 
-    echo "$FILE $H0 $HF $V0 $VF $YYDOY $DOY $YYYY"
+    echo "1. Extraindo Layers do arquivo $FILE ..."
     
     # 1) Extrai bandas
     # ndvi
-    LAYER="250m 16 days NDVI"
-    FILE_NDVI="${FILE}.ndvi"
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_NDVI}" -b "$FILE"
+    NDVI_FILE="${TMP_DIR}/$(basename ${FILE}).ndvi"
+    hdp_convert "250m 16 days NDVI" "${NDVI_FILE}" "${FILE}"
 
     # evi
-    LAYER="250m 16 days EVI"
-    FILE_EVI="${FILE}.evi"
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_EVI}" -b "$FILE"
+    EVI_FILE="${TMP_DIR}/$(basename ${FILE}).evi" 
+    hdp_convert "250m 16 days EVI" "${EVI_FILE}" "${FILE}"
     
     # quality
-    LAYER="250m 16 days VI Quality"
-    FILE_QUALITY="${FILE}.quality"
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_QUALITY}" -b "$FILE"
-    
+    QUALITY_FILE="${TMP_DIR}/$(basename ${FILE}).quality"
+    hdp_convert "250m 16 days VI Quality" "${QUALITY_FILE}" "${FILE}"
+
     # red
-    LAYER="250m 16 days red reflectance"
-    FILE_RED="${FILE}.red"
-    $HDP dumpsds -n "$LAYER" -o "${TMP_DIR}/${FILE_RED}" -b "$FILE"
+    RED_FILE="${TMP_DIR}/$(basename ${FILE}).red"
+    hdp_convert "250m 16 days red reflectance" "${RED_FILE}" "${FILE}"
 
     # nir
-    LAYER="250m 16 days NIR reflectance"
-    FILE_NIR="${FILE}.nir"
+    NIR_FILE="${TMP_DIR}/$(basename ${FILE}).nir"
+    hdp_convert "250m 16 days NIR reflectance" "${NIR_FILE}" "${FILE}"
 
     # blue
-    LAYER="250m 16 days blue reflectance"
-    FILE_BLUE="${FILE}.blue"
-
+    BLUE_FILE="${TMP_DIR}/$(basename ${FILE}).blue"
+    hdp_convert "250m 16 days blue reflectance" "${BLUE_FILE}" "${FILE}"
+    
     # mir
-    LAYER="250m 16 days MIR reflectance"
-    FILE_MIR="${FILE}.mir"
-
+    MIR_FILE="${TMP_DIR}/$(basename ${FILE}).mir" 
+    hdp_convert "250m 16 days MIR reflectance" "${MIR_FILE}" "${FILE}"
+    
     # view_zenith
-    LAYER="250m 16 days view zenith angle"
-    FILE_VIEW_ZENITH="${FILE}.view_zenith"
-
+    VIEW_ZENITH_FILE="${TMP_DIR}/$(basename ${FILE}).view_zenith"
+    hdp_convert "250m 16 days view zenith angle" "${VIEW_ZENITH_FILE}" "${FILE}"
+    
     # sun_zenith
-    LAYER="250m 16 days sun zenith angle"
-    FILE_SUN_ZENITH="${FILE}.sun_zenith"
-
+    SUN_ZENITH_FILE="${TMP_DIR}/$(basename ${FILE}).sun_zenith"
+    hdp_convert "250m 16 days sun zenith angle" "${SUN_ZENITH_FILE}" "${FILE}"
+    
     # relative_azimuth
-    LAYER="250m 16 days relative azimuth angle"
-    FILE_RELATIVE_AZIMUTH="${FILE}.relative_azimuth"
-
+    RELATIVE_AZIMUTH_FILE="${TMP_DIR}/$(basename ${FILE}).relative_azimuth"
+    hdp_convert "250m 16 days relative azimuth angle" "${RELATIVE_AZIMUTH_FILE}" "${FILE}"
+    
     # day_of_year
-    LAYER="250m 16 days composite day of the year"
-    FILE_DOY="${FILE}.doy"
+    DOY_FILE="${TMP_DIR}/$(basename ${FILE}).doy"
+    hdp_convert "250m 16 days composite day of the year" "${DOY_FILE}" "${FILE}"
+    
+    INTERLEAVED_FILE="${TMP_DIR}/$(basename ${FILE}).scidb"
+    echo "2. Juntando layers ..." 
+${INTERLEAVER} "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE" "$INTERLEAVED_FILE"
+    END_F_TIME=$(date +%s)
+    DIF_F_TIME=$(( ($END_F_TIME - $START_F_TIME) ))
+    echo "Arquivo $FILE preparado em $DIF_F_TIME s."
 
-done < $INPUT_FILE
+    echo "Removendo arquivos de camadas ..."
+    rm "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE"
 
+    # 3. Carregando no SciDB array 1D
+    echo "3. Carregandono SciDB array 1D ..."
+    echo "Criando  array 1D ..."
+    # 3.1 cria array
+    #echo "iquery -a -q \"create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];\""
+    iquery -a -q "create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];"
+    
+    #  3.2 carrega arquivo
+    echo "Carregando arquivo ..."
+    #iquery -a -q "load(mod13q1_vc_1d_test,'$INTERLEAVED_FILE',-2,'(int64, int16 null, string null, string)')";
+    #echo "iquery -a -q \"set no fetch; load(mod13q1_vc_1d_test_1,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')\"";
+    iquery -a -q "set no fetch; load(mod13q1_vc_1d_test_1,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')";
+    
+    # 4. Converte 1D em 3D
+    echo "Convertendo 1D em 3D ... "
+    #echo "iquery -a -q \"set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_1, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_1), mod13q1_vc_3d_test_1);\""
+   iquery -a -q "set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_1, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_1), mod13q1_vc_3d_test_1);"
+
+    # 4.1 removendo array 1D
+    echo "Removendo array 1D ..."
+    iquery -a -q "remove(mod13q1_vc_1d_test_1);"
+
+    
+done < $INPUT_FILE 
+
+END_TIME=$(date +%s)
+DIF_TIME=$(( ($END_TIME - $START_TIME) ))
+echo "Finalizada lista de arquivos $INPUT_FILE em $DIF_TIME s."
 
 #iquery -a -q "insert(redimension(apply(mod13q1_vc_1d_test,row_id, 10+i%10, col_id, 20+i/10),mod13q1_vc_test),mod13q1_vc_test);"
 
