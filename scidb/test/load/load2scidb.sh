@@ -65,7 +65,7 @@ while read line; do
     DOY=$(echo $line | cut -d ',' -f 7)
     YYYY=$(echo $line | cut -d ',' -f 8)
 
-    echo "1. Extraind Layers do arquivo $FILE ..."
+    echo "1. Extraindo Layers do arquivo $FILE ..."
     
     # 1) Extrai bandas
     # ndvi
@@ -117,28 +117,32 @@ while read line; do
 ${INTERLEAVER} "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE" "$INTERLEAVED_FILE"
     END_F_TIME=$(date +%s)
     DIF_F_TIME=$(( ($END_F_TIME - $START_F_TIME) ))
-    echo "Finalizado arquivo $FILE em $DIF_F_TIME s."
+    echo "Arquivo $FILE preparado em $DIF_F_TIME s."
+
+    echo "Removendo arquivos de camadas ..."
+    rm "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE"
 
     # 3. Carregando no SciDB array 1D
-    echo "Carregando no SciDB array 1D ..."
+    echo "3. Carregandono SciDB array 1D ..."
+    echo "Criando  array 1D ..."
     # 3.1 cria array
     #echo "iquery -a -q \"create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];\""
     iquery -a -q "create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];"
     
     #  3.2 carrega arquivo
+    echo "Carregando arquivo ..."
     #iquery -a -q "load(mod13q1_vc_1d_test,'$INTERLEAVED_FILE',-2,'(int64, int16 null, string null, string)')";
     #echo "iquery -a -q \"set no fetch; load(mod13q1_vc_1d_test_1,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')\"";
     iquery -a -q "set no fetch; load(mod13q1_vc_1d_test_1,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')";
     
     # 4. Converte 1D em 3D
     echo "Convertendo 1D em 3D ... "
-
-
     #echo "iquery -a -q \"set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_1, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_1), mod13q1_vc_3d_test_1);\""
    iquery -a -q "set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_1, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_1), mod13q1_vc_3d_test_1);"
 
     # 4.1 removendo array 1D
-    echo "iquery -a -q \"remove(mod13q1_vc_1d_test_1);\""
+    echo "Removendo array 1D ..."
+    iquery -a -q "remove(mod13q1_vc_1d_test_1);"
 
     
 done < $INPUT_FILE 
