@@ -36,7 +36,7 @@ function hdp_convert {
     FILE_IN=$3
     echo "Extraindo '$LAYER' ..." 
     #echo "$HDP dumpsds -n \"$LAYER\" -o \"$FILE_OUT\" -b \"$FILE_IN\""
-    $HDP dumpsds -n "$LAYER" -o "$FILE_OUT" -b "$FILE_IN"
+    #$HDP dumpsds -n "$LAYER" -o "$FILE_OUT" -b "$FILE_IN"
 }
 
 INPUT_FILE=$1
@@ -49,7 +49,7 @@ fi
 
 #[col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0]'
 
-#    iquery -a -q "create array mod13q1_vc_3d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0];"
+#    iquery -a -q "create array mod13q1_vc_3d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,4800,0,row_id=0:86399,4800,0,time_id=0:511,512,0];"
 #    echo "iquery -a -q \"create array mod13q1_vc_3d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0];\""
     echo
 START_TIME=$(date +%s)
@@ -114,7 +114,7 @@ while read line; do
     
     INTERLEAVED_FILE="${TMP_DIR}/$(basename ${FILE}).scidb"
     echo "2. Juntando layers ..." 
-${INTERLEAVER} "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE" "$INTERLEAVED_FILE"
+    #${INTERLEAVER} "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE" "$INTERLEAVED_FILE"
     END_F_TIME=$(date +%s)
     DIF_F_TIME=$(( ($END_F_TIME - $START_F_TIME) ))
     echo "Arquivo $FILE preparado em $DIF_F_TIME s."
@@ -127,7 +127,7 @@ ${INTERLEAVER} "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" 
     echo "Criando  array 1D ..."
     # 3.1 cria array
     #echo "iquery -a -q \"create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];\""
-    iquery -a -q "create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];"
+    iquery -a -q "create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,4800,0];"
     
     #  3.2 carrega arquivo
     echo "Carregando arquivo ..."

@@ -10,8 +10,8 @@ set no fetch;
 store(
 	subarray(
 		mod13q1_vc_3d_test_1, 
-		57600, 33600, 256,
-		57600, 67199, 256
+		57600, 33600, 10,
+		57600, 67199, 10
 	),
-	mod13q1_test_horizontal
+	mod13q1_vc_horizontal_test_1
 )
