@@ -49,8 +49,8 @@ fi
 
 #[col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0]'
 
-#    iquery -a -q "create array mod13q1_vc_3d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,4800,0,row_id=0:86399,4800,0,time_id=0:511,512,0];"
-#    echo "iquery -a -q \"create array mod13q1_vc_3d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0];\""
+#    iquery -a -q "create array mod13q1_vc_3d_test_2 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,4800,0,row_id=0:86399,4800,0,time_id=0:511,512,0];"
+#    echo "iquery -a -q \"create array mod13q1_vc_3d_test_2 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [col_id=0:172799,40,0,row_id=0:86399,40,0,time_id=0:511,512,0];\""
     echo
 START_TIME=$(date +%s)
 while read line; do
@@ -126,23 +126,23 @@ while read line; do
     echo "3. Carregandono SciDB array 1D ..."
     echo "Criando  array 1D ..."
     # 3.1 cria array
-    #echo "iquery -a -q \"create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];\""
-    iquery -a -q "create array mod13q1_vc_1d_test_1 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,4800,0];"
+    #echo "iquery -a -q \"create array mod13q1_vc_1d_test_2 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,1000,0];\""
+    iquery -a -q "create array mod13q1_vc_1d_test_2 <ndvi:int16,evi:int16,quality:uint16,red:int16,nir:int16,blue:int16,mir:int16,view_zenith:int16,sun_zenith:int16,relative_azimuth:int16,day_of_year:int16> [i=0:23039999,4800,0];"
     
     #  3.2 carrega arquivo
     echo "Carregando arquivo ..."
     #iquery -a -q "load(mod13q1_vc_1d_test,'$INTERLEAVED_FILE',-2,'(int64, int16 null, string null, string)')";
-    #echo "iquery -a -q \"set no fetch; load(mod13q1_vc_1d_test_1,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')\"";
-    iquery -a -q "set no fetch; load(mod13q1_vc_1d_test_1,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')";
+    #echo "iquery -a -q \"set no fetch; load(mod13q1_vc_1d_test_2,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')\"";
+    iquery -a -q "set no fetch; load(mod13q1_vc_1d_test_2,'$INTERLEAVED_FILE',-2,'(int16,int16,int16,int16,int16,int16,int16,int16,int16,int16,int16)')";
     
     # 4. Converte 1D em 3D
     echo "Convertendo 1D em 3D ... "
-    #echo "iquery -a -q \"set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_1, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_1), mod13q1_vc_3d_test_1);\""
-   iquery -a -q "set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_1, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_1), mod13q1_vc_3d_test_1);"
+    #echo "iquery -a -q \"set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_2, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_2), mod13q1_vc_3d_test_2);\""
+   iquery -a -q "set no fetch; insert(redimension(apply(mod13q1_vc_1d_test_2, row_id, ${V0}+i%4800, col_id, ${H0}+i/4800, time_id, ${TIME}), mod13q1_vc_3d_test_2), mod13q1_vc_3d_test_2);"
 
     # 4.1 removendo array 1D
     echo "Removendo array 1D ..."
-    iquery -a -q "remove(mod13q1_vc_1d_test_1);"
+    iquery -a -q "remove(mod13q1_vc_1d_test_2);"
 
     
 done < $INPUT_FILE 

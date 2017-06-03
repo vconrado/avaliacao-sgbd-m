@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Faz a carga de dados de determinado ano
+# run.year.sh 2000
 
 if [[ $# -lt 1 ]]; then
     echo "Usage `basename $0` year"
