@@ -11,7 +11,7 @@
 # Verifica se recebeu argumento
 
 if [ "$#" -lt 2 ]; then
-    echo "Illegal number of parameters"
+    echo "Usage: `basename $0` output_file script_file [param1 [param2 [....]]]"
     exit
 fi
 
