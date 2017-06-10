@@ -9,9 +9,9 @@
 set no fetch;
 store(
 	between(
-		mod13q1_512, 
+		mod13q1_vc_3d_test_2, 
 		52800, 43200, 0,
 		62399, 52799, 19
 	),
-	mod13q1_vc_between_test_11
+	mod13q1_vc_betweem_test_2
 )
