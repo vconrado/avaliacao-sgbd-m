@@ -14,11 +14,11 @@ set no fetch;
 store(
 	project(
 		apply(
-			mod13q1_vc_3d_test_1, 
+			mod13q1_vc_3d_test_2, 
 		    new_evi,
 			2.5*(nir-red)/(nir+6.0*red-7.5*blue+1.)
 		),
 		new_evi
 	),
-    mod13q1_vc_evi_test_1
+    mod13q1_vc_evi_test_22
 );

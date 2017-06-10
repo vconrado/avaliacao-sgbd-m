@@ -9,9 +9,9 @@
 set no fetch;
 store(
 	subarray(
-		mod13q1_vc_3d_test_1, 
+		mod13q1_vc_3d_test_2, 
 		43200, 48000, 10,
 		71999, 48000, 10
 	),
-	mod13q1_vc_vertical_test_1
+	mod13q1_vc_vertical_test_22
 )

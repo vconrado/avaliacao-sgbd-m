@@ -1,17 +1,17 @@
 --
--- File: subset.afl
+-- File: between.afl
 -- Author: Vitor Gomes <vconrado@gmail.com>
--- Created: 2017-03-31
--- Last update: 2017-03-31
+-- Created: 2017-06-09
+-- Last update: 2017-06-09
 --
 --
 
 set no fetch;
 store(
-	subarray(
+	between(
 		mod13q1_512, 
 		52800, 43200, 0,
 		62399, 52799, 19
 	),
-	mod13q1_vc_subset_test_11
+	mod13q1_vc_between_test_11
 )

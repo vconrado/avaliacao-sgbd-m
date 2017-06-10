@@ -120,7 +120,7 @@ while read line; do
     echo "Arquivo $FILE preparado em $DIF_F_TIME s."
 
     echo "Removendo arquivos de camadas ..."
-    rm "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE"
+#    rm "$NDVI_FILE" "$EVI_FILE" "$QUALITY_FILE" "$RED_FILE" "$NIR_FILE" "$BLUE_FILE" "$MIR_FILE" "$VIEW_ZENITH_FILE" "$SUN_ZENITH_FILE" "$RELATIVE_AZIMUTH_FILE" "$DOY_FILE"
 
     # 3. Carregando no SciDB array 1D
     echo "3. Carregandono SciDB array 1D ..."
